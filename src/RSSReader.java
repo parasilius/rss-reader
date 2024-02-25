@@ -7,10 +7,10 @@ public class RSSReader
 
     public static void main(String[] args) throws Exception
     {
-        System.out.println(getPageSource("https://www.rkneusel.com/"));
+        System.out.println(fetchPageSource("https://magazine.sebastianraschka.com/"));
     }
 
-    public static String getPageSource(String urlString) throws Exception
+    public static String fetchPageSource(String urlString) throws Exception
     {
         try
         {
