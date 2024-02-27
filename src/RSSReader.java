@@ -7,29 +7,82 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class RSSReader
 {
     private ArrayList<String> websiteNames;
     private ArrayList<String> websiteUrls;
     private ArrayList<String> rssUrls;
-    private int rssCount = 0;
+    private int rssCount;
+    private static final String DATA_FILE_PATH = "data.txt";
 
     public static void main(String[] args) throws Exception
     {
-        String url = "https://www.omgubuntu.co.uk/";
-        String html = fetchPageSource(url);
-        System.out.println(extractPageTitle(html));
-        retrieveRssContent(extractRssUrl(html));
+        System.out.println("Welcome to RSS Reader!");
+        RSSReader rssReader = new RSSReader();
+        while (true)
+        {
+            System.out.println("Type a valid number for your desired action:");
+            System.out.println("[1] Show updates");
+            System.out.println("[2] Add URL");
+            System.out.println("[3] Remove URL");
+            System.out.println("[4] Exit");
+
+            Scanner in = new Scanner(System.in);
+            int number = in.nextInt();
+            in.nextLine();
+
+            if (number == 1)
+                rssReader.showUpdates();
+            if (number == 2)
+            {
+                System.out.println("Please enter website URL to add:");
+                String url = in.nextLine();
+                rssReader.addUrl(url);
+            }
+            if (number == 4)
+            {
+                rssReader.saveData();
+                break;
+            }
+        }
     }
 
-    public void saveData(String dataFilePath)
+    public RSSReader()
+    {
+        websiteNames = new ArrayList<String>();
+        websiteUrls = new ArrayList<String>();
+        rssUrls = new ArrayList<String>();
+        rssCount = 0;
+        loadData(DATA_FILE_PATH);
+    }
+
+    public void addUrl(String url) throws Exception
+    {
+        String html = fetchPageSource(url);
+        websiteNames.add(extractPageTitle(html));
+        websiteUrls.add(url);
+        rssUrls.add(extractRssUrl(html));
+        rssCount += 1;
+    }
+
+    public void showUpdates() throws Exception
+    {
+        for (int i = 0; i < rssCount; ++i)
+        {
+            System.out.println(websiteNames.get(i));
+            retrieveRssContent(rssUrls.get(i));
+        }
+    }
+
+    public void saveData()
     {
         try
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(dataFilePath)));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(DATA_FILE_PATH)));
             for (int i = 0; i < rssCount; ++i)
-                writer.write(websiteNames.get(i) + "," + websiteUrls.get(i) + "," + rssUrls.get(i));
+                writer.write(websiteNames.get(i) + ";" + websiteUrls.get(i) + ";" + rssUrls.get(i) + "\n");
             writer.close();
         }
         catch (IOException e)
@@ -50,7 +103,7 @@ public class RSSReader
             String line;
             while ((line = reader.readLine()) != null)
             {
-                String[] dataStringList = line.split(",");
+                String[] dataStringList = line.split(";");
                 websiteNames.add(dataStringList[0]);
                 websiteUrls.add(dataStringList[1]);
                 rssUrls.add(dataStringList[2]);
