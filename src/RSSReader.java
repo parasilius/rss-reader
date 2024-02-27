@@ -6,9 +6,15 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class RSSReader
 {
+    private ArrayList<String> websiteNames;
+    private ArrayList<String> websiteUrls;
+    private ArrayList<String> rssUrls;
+    private int rssCount = 0;
+
     public static void main(String[] args) throws Exception
     {
         String url = "https://www.omgubuntu.co.uk/";
@@ -17,7 +23,48 @@ public class RSSReader
         retrieveRssContent(extractRssUrl(html));
     }
 
-    public static String extractPageTitle(String html) throws NullPointerException
+    public void saveData(String dataFilePath)
+    {
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(new File(dataFilePath)));
+            for (int i = 0; i < rssCount; ++i)
+                writer.write(websiteNames.get(i) + "," + websiteUrls.get(i) + "," + rssUrls.get(i));
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: failed to open data file:" + e.getMessage());
+        }
+    }
+
+    public void loadData(String dataFilePath)
+    {
+        try
+        {
+            File dataFile = new File(dataFilePath);
+            FileReader fileReader = new FileReader(dataFile);
+
+            BufferedReader reader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                String[] dataStringList = line.split(",");
+                websiteNames.add(dataStringList[0]);
+                websiteUrls.add(dataStringList[1]);
+                rssUrls.add(dataStringList[2]);
+                rssCount += 1;
+            }
+            reader.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Error: failed to open data file: " + e.getMessage());
+        }
+    }
+
+    public static String extractPageTitle(String html)
     {
         try
         {
