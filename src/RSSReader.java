@@ -1,3 +1,5 @@
+import org.jsoup.*;
+import org.jsoup.nodes.Document;
 import java.net.*;
 import java.io.*;
 
@@ -7,7 +9,14 @@ public class RSSReader
 
     public static void main(String[] args) throws Exception
     {
-        System.out.println(fetchPageSource("https://magazine.sebastianraschka.com/"));
+        String html = fetchPageSource("https://magazine.sebastianraschka.com/");
+        System.out.println(extractRssUrl(html));
+    }
+
+    public static String extractRssUrl(String html)
+    {
+        Document doc = Jsoup.parse(html);
+        return doc.select("[type='application/rss+xml']").attr("href");
     }
 
     public static String fetchPageSource(String urlString) throws Exception
