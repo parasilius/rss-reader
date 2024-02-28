@@ -99,7 +99,13 @@ public class RSSReader
                 return false;
         websiteNames.add(extractPageTitle(html));
         websiteUrls.add(url);
-        rssUrls.add(extractRssUrl(html));
+        String rssUrl = extractRssUrl(html);
+        if (rssUrl.startsWith("/"))
+            if (url.endsWith("/"))
+                rssUrl = url.substring(0, url.length() - 1) + rssUrl;
+            else
+                rssUrl = url + rssUrl;
+        rssUrls.add(rssUrl);
         rssCount += 1;
         return true;
     }
