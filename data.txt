@@ -1,3 +1,5 @@
-OMG! Ubuntu - Ubuntu News, Apps, Tips & More;https://www.omgubuntu.co.uk/;https://www.omgubuntu.co.uk/feed
 Blog | Julia Silge;https://juliasilge.com/blog/;https://juliasilge.com/blog/index.xml
 Ahead of AI | Sebastian Raschka, PhD | Substack;https://magazine.sebastianraschka.com/;/feed
+The Invent with Python Blog;https://inventwithpython.com/blog/;https://inventwithpython.com/blog/rss.xml
+Probably Overthinking It – Data science, Bayesian Statistics, and other ideas;https://www.allendowney.com/blog/;https://www.allendowney.com/blog/feed/
+OMG! Ubuntu - Ubuntu News, Apps, Tips & More;https://www.omgubuntu.co.uk/;https://www.omgubuntu.co.uk/feed

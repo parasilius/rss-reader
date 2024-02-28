@@ -39,7 +39,24 @@ public class RSSReader
             {
                 System.out.println("Please enter website URL to add:");
                 String url = in.nextLine();
-                rssReader.addUrl(url);
+                try
+                {
+                    if (rssReader.addUrl(url))
+                        System.out.printf("Added %s successfully.\n", url);
+                    else System.out.printf("%s already exists.\n", url);
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Error in adding url: " + e.getMessage());
+                }
+            }
+            if (number == 3)
+            {
+                System.out.println("Please enter website URL to remove:");
+                String url = in.nextLine();
+                if (rssReader.removeUrl(url))
+                    System.out.printf("Removed %s successfully.\n", url);
+                else System.out.printf("Couldn't find %s.\n", url);
             }
             if (number == 4)
             {
@@ -58,13 +75,33 @@ public class RSSReader
         loadData(DATA_FILE_PATH);
     }
 
-    public void addUrl(String url) throws Exception
+    public boolean removeUrl(String url)
+    {
+        for (int i = 0; i < rssCount; ++i)
+        {
+            if (websiteUrls.get(i).equals(url))
+            {
+                websiteNames.remove(i);
+                websiteUrls.remove(i);
+                rssUrls.remove(i);
+                rssCount -= 1;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addUrl(String url) throws Exception
     {
         String html = fetchPageSource(url);
+        for (int i = 0; i < rssCount; ++i)
+            if (websiteUrls.get(i).equals(url))
+                return false;
         websiteNames.add(extractPageTitle(html));
         websiteUrls.add(url);
         rssUrls.add(extractRssUrl(html));
         rssCount += 1;
+        return true;
     }
 
     public void showUpdates() throws Exception
@@ -130,28 +167,32 @@ public class RSSReader
         }
     }
 
-    public static void retrieveRssContent(String rssUrl) throws Exception
+    public static void retrieveRssContent(String rssUrl)
     {
-        String rssXml = fetchPageSource(rssUrl);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        StringBuilder xmlStringBuilder = new StringBuilder();
-        xmlStringBuilder.append(rssXml);
-        ByteArrayInputStream input = new ByteArrayInputStream(
-                xmlStringBuilder.toString().getBytes("UTF-8"));
-        org.w3c.dom.Document doc = documentBuilder.parse(input);
-        NodeList itemNodes = doc.getElementsByTagName("item");
+        try {
+            String rssXml = fetchPageSource(rssUrl);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            StringBuilder xmlStringBuilder = new StringBuilder();
+            xmlStringBuilder.append(rssXml);
+            ByteArrayInputStream input = new ByteArrayInputStream(
+                    xmlStringBuilder.toString().getBytes("UTF-8"));
+            org.w3c.dom.Document doc = documentBuilder.parse(input);
+            NodeList itemNodes = doc.getElementsByTagName("item");
 
-        for (int i = 0; i < itemNodes.getLength(); ++i)
-        {
-            Node itemNode = itemNodes.item(i);
-            if (itemNode.getNodeType() == Node.ELEMENT_NODE)
-            {
-                Element element = (Element) itemNode;
-                System.out.println("Title: " + element.getElementsByTagName("title").item(0).getTextContent());
-                System.out.println("Link: " + element.getElementsByTagName("link").item(0).getTextContent());
-                System.out.println("Description: " + element.getElementsByTagName("description").item(0).getTextContent());
+            for (int i = 0; i < itemNodes.getLength(); ++i) {
+                Node itemNode = itemNodes.item(i);
+                if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) itemNode;
+                    System.out.println("Title: " + element.getElementsByTagName("title").item(0).getTextContent());
+                    System.out.println("Link: " + element.getElementsByTagName("link").item(0).getTextContent());
+                    System.out.println("Description: " + element.getElementsByTagName("description").item(0).getTextContent());
+                }
             }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error in retrieving RSS content for " + rssUrl + ": " + e.getMessage());
         }
     }
 
@@ -163,29 +204,20 @@ public class RSSReader
 
     public static String fetchPageSource(String urlString) throws Exception
     {
-        try
-        {
-            URI uri = new URI(urlString);
-            URL url = uri.toURL();
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-            return toString(urlConnection.getInputStream());
-        }
-        catch (MalformedURLException e)
-        {
-            throw new RuntimeException(e);
-        }
+        URI uri = new URI(urlString);
+        URL url = uri.toURL();
+        URLConnection urlConnection = url.openConnection();
+        urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        return toString(urlConnection.getInputStream());
     }
     private static String toString(InputStream inputStream) throws IOException
     {
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8")))
-        {
-            String inputLine;
-            StringBuilder stringBuilder = new StringBuilder();
-            while ((inputLine = bufferedReader.readLine()) != null)
-                stringBuilder.append(inputLine);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+        String inputLine;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((inputLine = bufferedReader.readLine()) != null)
+            stringBuilder.append(inputLine);
 
-            return stringBuilder.toString();
-        }
+        return stringBuilder.toString();
     }
 }
