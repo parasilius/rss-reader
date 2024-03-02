@@ -15,6 +15,7 @@ public class RSSReader
     private ArrayList<String> websiteUrls;
     private ArrayList<String> rssUrls;
     private int rssCount;
+    private static final int MAX_ITEMS = 5;
     private static final String DATA_FILE_PATH = "data.txt";
 
     public static void main(String[] args) throws Exception
@@ -186,7 +187,7 @@ public class RSSReader
             org.w3c.dom.Document doc = documentBuilder.parse(input);
             NodeList itemNodes = doc.getElementsByTagName("item");
 
-            for (int i = 0; i < itemNodes.getLength(); ++i) {
+            for (int i = 0; i < MAX_ITEMS; ++i) {
                 Node itemNode = itemNodes.item(i);
                 if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) itemNode;
