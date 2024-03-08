@@ -15,3 +15,4 @@ Python-bloggers;https://python-bloggers.com/;https://python-bloggers.com/feed/
 Welcome to LWN.net [LWN.net];https://lwn.net/;https://lwn.net/headlines/rss
 کافه‌بوک | معرفی کتاب‌ | رمان خوب;https://kafebook.ir/;https://kafebook.ir/feed/
 سایت شخصی فربد آذسن - Frozen Fireball;https://azsan.ir/;https://azsan.ir/feed/
+Bandit Algorithms;https://banditalgs.com/;https://banditalgs.com/feed/
