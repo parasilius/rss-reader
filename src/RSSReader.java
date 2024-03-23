@@ -86,11 +86,13 @@ public class RSSReader
         loadData(DATA_FILE_PATH);
     }
 
-    public boolean removeUrl(String url)
+    public boolean removeUrl(String url) throws Exception
     {
+        URI newUrl = new URI(url);
         for (int i = 0; i < rssCount; ++i)
         {
-            if (websiteUrls.get(i).equals(url))
+            URI existingUrl = new URI(websiteUrls.get(i));
+            if (existingUrl.equals(newUrl))
             {
                 websiteNames.remove(i);
                 websiteUrls.remove(i);
