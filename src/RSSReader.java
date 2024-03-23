@@ -35,7 +35,17 @@ public class RSSReader
             in.nextLine();
 
             if (number == 1)
-                rssReader.showUpdates();
+            {
+                System.out.println("Show updates for:");
+                System.out.println("[0] All websites");
+                for (int i = 0; i < rssReader.rssCount; ++i)
+                    System.out.println("[" + (i + 1) + "] " + rssReader.websiteNames.get(i));
+                System.out.println("Enter -1 to return.");
+                int value = Integer.parseInt(in.nextLine());
+                if (value == -1)
+                    continue;
+                rssReader.showUpdates(value - 1);
+            }
             if (number == 2)
             {
                 System.out.println("Please enter website URL to add:");
@@ -111,13 +121,21 @@ public class RSSReader
         return true;
     }
 
-    public void showUpdates() throws Exception
+    public void showUpdates(int i) throws Exception
     {
-        for (int i = 0; i < rssCount; ++i)
+        if (i == -1)
+            for (int j = 0; j < rssCount; ++j)
+            {
+                System.out.println(websiteNames.get(j));
+                retrieveRssContent(rssUrls.get(j));
+            }
+        else if (0 <= i && i < rssCount)
         {
             System.out.println(websiteNames.get(i));
             retrieveRssContent(rssUrls.get(i));
         }
+        else
+            throw new IndexOutOfBoundsException("Index " + (i + 1) + " is not valid!");
     }
 
     public void saveData()
