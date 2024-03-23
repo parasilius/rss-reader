@@ -14,5 +14,5 @@ Welcome to LWN.net [LWN.net];https://lwn.net/;https://lwn.net/headlines/rss
 کافه‌بوک | معرفی کتاب‌ | رمان خوب;https://kafebook.ir/;https://kafebook.ir/feed/
 سایت شخصی فربد آذسن - Frozen Fireball;https://azsan.ir/;https://azsan.ir/feed/
 Bandit Algorithms;https://banditalgs.com/;https://banditalgs.com/feed/
-Cay Horstmann's Unblog;https://horstmann.com/unblog/index.html;https://horstmann.com/unblog/rss.xml
 Statistical Thinking;https://www.fharrell.com/;https://www.fharrell.com/index.xml
+Cay Horstmann's Unblog;https://horstmann.com/unblog/;https://horstmann.com/unblog/rss.xml
