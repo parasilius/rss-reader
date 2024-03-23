@@ -52,7 +52,7 @@ public class RSSReader
                 String url = in.nextLine();
                 try
                 {
-                    if (rssReader.addUrl(url))
+                    if (rssReader.addWebsite(url))
                         System.out.printf("Added %s successfully.\n", url);
                     else System.out.printf("%s already exists.\n", url);
                 }
@@ -102,7 +102,7 @@ public class RSSReader
         return false;
     }
 
-    public boolean addUrl(String url) throws Exception
+    public boolean addWebsite(String url) throws Exception
     {
         String html = fetchPageSource(url);
         for (int i = 0; i < rssCount; ++i)
@@ -110,12 +110,8 @@ public class RSSReader
                 return false;
         websiteNames.add(extractPageTitle(html));
         websiteUrls.add(url);
-        String rssUrl = extractRssUrl(html);
-        if (rssUrl.startsWith("/"))
-            if (url.endsWith("/"))
-                rssUrl = url.substring(0, url.length() - 1) + rssUrl;
-            else
-                rssUrl = url + rssUrl;
+        // String rssUrl = extractRssUrl(html);
+        String rssUrl = extractRssUrl(url);
         rssUrls.add(rssUrl);
         rssCount += 1;
         return true;
@@ -221,10 +217,10 @@ public class RSSReader
         }
     }
 
-    public static String extractRssUrl(String html)
+    public static String extractRssUrl(String url) throws IOException
     {
-        org.jsoup.nodes.Document doc = Jsoup.parse(html);
-        return doc.select("[type='application/rss+xml']").attr("href");
+        org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
+        return doc.select("[type='application/rss+xml']").attr("abs:href");
     }
 
     public static String fetchPageSource(String urlString) throws Exception
