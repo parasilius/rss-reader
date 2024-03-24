@@ -16,3 +16,4 @@ Bandit Algorithms;https://banditalgs.com/;https://banditalgs.com/feed/
 Statistical Thinking;https://www.fharrell.com/;https://www.fharrell.com/index.xml
 Cay Horstmann's Unblog;https://horstmann.com/unblog/;https://horstmann.com/unblog/rss.xml
 R-bloggers;https://www.r-bloggers.com/;https://feeds.feedburner.com/RBloggers
+Simply Statistics;https://simplystatistics.org/;http://feeds.feedburner.com/SimplyStatistics
