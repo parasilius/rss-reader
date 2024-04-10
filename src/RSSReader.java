@@ -27,7 +27,7 @@ public class RSSReader
             System.out.println("Type a valid number for your desired action:");
             System.out.println("[1] Show updates");
             System.out.println("[2] Add URL");
-            System.out.println("[3] Remove URL");
+            System.out.println("[3] Remove website");
             System.out.println("[4] Exit");
 
             Scanner in = new Scanner(System.in);
@@ -63,11 +63,14 @@ public class RSSReader
             }
             if (number == 3)
             {
-                System.out.println("Please enter website URL to remove:");
-                String url = in.nextLine();
-                if (rssReader.removeUrl(url))
-                    System.out.printf("Removed %s successfully.\n", url);
-                else System.out.printf("Couldn't find %s.\n", url);
+                System.out.println("Choose website number to remove:");
+                for (int i = 0; i < rssReader.rssCount; ++i)
+                    System.out.println("[" + (i + 1) + "] " + rssReader.websiteNames.get(i));
+                System.out.println("Enter -1 to return.");
+                int value = Integer.parseInt(in.nextLine());
+                if (value == -1)
+                    continue;
+                rssReader.removeWebsite(value - 1);
             }
             if (number == 4)
             {
@@ -134,6 +137,27 @@ public class RSSReader
         }
         else
             throw new IndexOutOfBoundsException("Index " + (i + 1) + " is not valid!");
+    }
+
+    public void removeWebsite(int value) throws Exception
+    {
+        if (0 <= value && value < rssCount)
+        {
+            websiteNames.remove(value);
+            websiteUrls.remove(value);
+            rssUrls.remove(value);
+            decrementRssCount();
+        }
+        else
+            throw new IndexOutOfBoundsException("Index " + (value + 1) + " is not valid!");
+    }
+
+    public void decrementRssCount() throws Exception
+    {
+        if (rssCount - 1 < 0)
+            throw new Exception("Number of websites cannot be less than zero!");
+        else
+            rssCount -= 1;
     }
 
     public void saveData()
