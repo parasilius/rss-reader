@@ -16,3 +16,4 @@ Statistical Thinking;https://www.fharrell.com/;https://www.fharrell.com/index.xm
 Cay Horstmann's Unblog;https://horstmann.com/unblog/;https://horstmann.com/unblog/rss.xml
 R-bloggers;https://www.r-bloggers.com/;https://feeds.feedburner.com/RBloggers
 Simply Statistics;https://simplystatistics.org/;http://feeds.feedburner.com/SimplyStatistics
+What's new | Updates on my research and expository papers, discussion of open problems, and other maths-related topics.  By Terence Tao;https://terrytao.wordpress.com/;https://terrytao.wordpress.com/feed/
