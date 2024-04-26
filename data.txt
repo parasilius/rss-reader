@@ -18,3 +18,4 @@ R-bloggers;https://www.r-bloggers.com/;https://feeds.feedburner.com/RBloggers
 Simply Statistics;https://simplystatistics.org/;http://feeds.feedburner.com/SimplyStatistics
 What's new | Updates on my research and expository papers, discussion of open problems, and other maths-related topics.  By Terence Tao;https://terrytao.wordpress.com/;https://terrytao.wordpress.com/feed/
 KHstats - Blog;https://www.khstats.com/blog;https://www.khstats.com/blog.xml
+Notes from a data witch;https://blog.djnavarro.net/;https://blog.djnavarro.net/index.xml
